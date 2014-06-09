@@ -8,7 +8,7 @@ Installation
 
 Git clone the program:
 
-```
+```bash
 git clone https://github.com/Acanthostega/bibtex-completer
 cd bibtex-completer
 ```
@@ -19,7 +19,7 @@ instructions if problems.
 If not already done, install `bibtexparser` module for python 2.x (used by
 YouCompleteMe).
 
-```
+```bash
 pip install bibtexparser --user # --user for local installation
 ```
 
@@ -33,7 +33,7 @@ program will up in the tree until finding this configuration file.
 Inside put a dictionary with the key "bibtex" containing the list of files
 used for the bibtex references.
 
-```
+```json
 {
     "bibtex": [ "path/to/reference.bib", "/path/to/second/references.bib"],
     "root": "path",
