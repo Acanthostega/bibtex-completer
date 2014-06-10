@@ -18,7 +18,7 @@ then
 fi
 
 echo "Create directory into the youcompleteme configuraiton."
-mkdir $INSTALL_DIR/tex
+mkdir -p $INSTALL_DIR/tex
 
 # get current directory
 pushd . > /dev/null
