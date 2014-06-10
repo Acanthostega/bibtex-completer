@@ -32,7 +32,7 @@ current="`pwd`";
 popd  > /dev/null
 
 echo "Move files to it"
-CP = $(which cp)
-CP -r $current/tex/*.py $INSTALL_DIR/tex/
+CP=$(which cp)
+$CP -r $current/tex/*.py $INSTALL_DIR/tex/
 
 echo "Installation done!"
