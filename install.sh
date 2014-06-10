@@ -3,14 +3,14 @@
 YOUCOMPLETEME_DIR=$HOME/.spf13-vim-3/.vim/bundle/YouCompleteMe
 INSTALL_DIR=$YOUCOMPLETEME_DIR/third_party/ycmd/ycmd/completers/
 
-if [[! -d $YOUCOMPLETEME_DIR ]]
+if [[ ! -d $YOUCOMPLETEME_DIR ]]
 then
     echo "The path for youcompleteme isn't the good one!"
     echo "PATH: $YOUCOMPLETEME_DIR"
     exit 1
 fi
 
-if [[ -d $INSTALL_DIR ]]
+if [[ ! -d $INSTALL_DIR ]]
 then
     echo "The file structure of youcompleteme seems to be too old."
     echo "Upgrade it!"
@@ -18,7 +18,7 @@ then
 fi
 
 echo "Create directory into the youcompleteme configuraiton."
-mkdir $INSTALL_DIR/tex
+mkdir -p $INSTALL_DIR/tex
 
 # get current directory
 pushd . > /dev/null
@@ -32,7 +32,7 @@ current="`pwd`";
 popd  > /dev/null
 
 echo "Move files to it"
-CP = $(which cp)
-CP -r $current/tex/*.py $INSTALL_DIR/tex/
+CP=$(which cp)
+$CP -r $current/tex/*.py $INSTALL_DIR/tex/
 
 echo "Installation done!"
