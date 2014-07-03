@@ -17,13 +17,13 @@ then
     exit 1
 fi
 
-echo "Create directory into the youcompleteme configuraiton."
+echo "Create directory into the youcompleteme configuration."
 mkdir -p $INSTALL_DIR/tex
 
 # get current directory
 pushd . > /dev/null
 current="${BASH_SOURCE[0]:-$0}";
-while([ -h "${current}" ]); do
+while ([ -h "${current}" ]); do
     cd "`dirname "${current}"`"
     current="$(readlink "`basename "${current}"`")";
 done
@@ -31,7 +31,7 @@ cd "`dirname "${current}"`" > /dev/null
 current="`pwd`";
 popd  > /dev/null
 
-echo "Move files to it"
+echo "Move files to it."
 CP=$(which cp)
 $CP -r $current/tex/*.py $INSTALL_DIR/tex/
 
