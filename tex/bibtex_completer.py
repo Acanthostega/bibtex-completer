@@ -225,8 +225,6 @@ class BibTexCompleter(Completer):
                 re.sub(r".*\label{(.*)}.*", r"\1", label)
                 )
             )
-        with open("/tmp/bidule", "w") as f:
-            f.write(ret.__repr__())
 
         return ret
 
