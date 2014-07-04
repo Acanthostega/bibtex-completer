@@ -34,6 +34,9 @@ REF = [
     "vref",
 ]
 
+# the regular expression to find latex commands
+PATTERN = re.compile(r"\\(\w+)\{")
+
 
 def recursive_glob(treeroot, pattern):
     results = []
@@ -122,12 +125,12 @@ class BibTexCompleter(Completer):
         col = request["start_column"] - 1
 
         # search the regular expression
-        m = re.match(r"\\(\w+)\{", line[:col])
+        m = PATTERN.findall(line[:col])
 
         # get the command
         try:
-            self._command = m.groups()[0]
-        except AttributeError:
+            self._command = m[0]
+        except IndexError:
             self._command = "@@NULL"
 
     def _search_cite_list(self):
