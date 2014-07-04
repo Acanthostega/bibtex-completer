@@ -18,6 +18,22 @@ from bibtexparser.customization import author
 
 LOG = logging.getLogger(__name__)
 
+# list of commands for cite
+CITE = [
+    "cite",
+    "citeauthor",
+    "citen",
+    "citep",
+    "citet",
+    "citeyear",
+    "footcite"
+]
+
+REF = [
+    "ref",
+    "vref",
+]
+
 
 def recursive_glob(treeroot, pattern):
     results = []
@@ -89,9 +105,42 @@ class BibTexCompleter(Completer):
         self.complete_target = self.NONE
         LOG.info("I'm here")
         self._data = _search_config_file()
+        self._CITE = CITE
+        self._REF = REF
+        if "cites" in self._data:
+            self._CITE += self._data["cites"]
+        if "references" in self._data:
+            self._REF += self._data["references"]
 
     def DebugInfo(self, request_data):
         return "TeX completer %d" % self.complete_target
+
+    def _search_command(self, request):
+
+        # get some properties of the line
+        line = request["line_value"]
+        col = request["start_column"] - 1
+
+        # search the regular expression
+        m = re.match(r"\\(\w+)\{", line[:col])
+
+        # get the command
+        try:
+            self._command = m.groups()[0]
+        except AttributeError:
+            self._command = "@@NULL"
+
+    def _search_cite_list(self):
+
+        return self._command in self._CITE
+
+    def _search_ref_list(self):
+
+        # check is in cites
+        # check is in cites
+        LOG.info("command: %s" % self._command)
+        LOG.info(REF)
+        return self._command in self._REF
 
     def ShouldUseNowInner(self, request_data):
         """
@@ -99,27 +148,15 @@ class BibTexCompleter(Completer):
         current buffer state.
         """
 
-        # we only want to be called for \cite{} and \ref{} completions,
-        # otherwise the default completer will be just fine
+        # get the latex command launched
+        self._search_command(request_data)
 
-        line = request_data["line_value"]
-        col = request_data["start_column"] - 1
-
-        if (
-            line[col-6:col] == r'\cite{' or
-            line[col-12:col] == r'\citeauthor{' or
-            line[col-7:col] == r'\citen{' or
-            line[col-7:col] == r'\citep{' or
-            line[col-7:col] == r'\citet{' or
-            line[col-10:col] == r'\citeyear{' or
-            line[col-10:col] == r'\footcite{'
-        ):
+        if self._search_cite_list():
             self.complete_target = self.CITATIONS
             LOG.debug("complete target %d" % self.complete_target)
             return True
 
-        if (line[col-5:col] == r'\ref{') or \
-           (line[col-6:col] == r'\vref{'):
+        if self._search_ref_list():
             self.complete_target = self.LABELS
             LOG.debug("complete target %d" % self.complete_target)
             return True
