@@ -134,15 +134,9 @@ class BibTexCompleter(Completer):
             self._command = "@@NULL"
 
     def _search_cite_list(self):
-
         return self._command in self._CITE
 
     def _search_ref_list(self):
-
-        # check is in cites
-        # check is in cites
-        LOG.info("command: %s" % self._command)
-        LOG.info(REF)
         return self._command in self._REF
 
     def ShouldUseNowInner(self, request_data):
@@ -223,7 +217,6 @@ class BibTexCompleter(Completer):
                         extra_menu_info="\t".join(info)
                         )
                     )
-                    LOG.info(ret)
         return ret
 
     @staticmethod
